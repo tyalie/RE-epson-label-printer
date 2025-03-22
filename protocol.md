@@ -30,8 +30,8 @@ the course of opening the app, printing a label and closing the app again.
     1. set request status
     2. set page length
     3. set margin
-7. printing raster
-8. ~done~ (long pause of 4s | maybe actually printing?)
+7. send printing raster
+8. ~printing~ (waiting for ST=PrintEnd)
 9. reset request status [v1]
 10. reset request status [v1]
 
@@ -92,13 +92,13 @@ there.
 
 ```
 PrintPage = 0
-Status = "ST"
+Status = "ST"  (see mappings)
 Error = ErrorRemain = "ER"
 TapeWidth = "TW"
-PropTapeWidth = {
-    0:0, 1:2, 2:3, 3:4, 4:5, 5:6, 6:7, 7:0C, 0B:1, 11:8, 12:9, 21:a, 23:b,
+MappedTapeWidth = {
+    0:0, 1:2, 2:3, 3:4, 4:5, 5:6, 6:7, 7:C, 0B:1, 11:8, 12:9, 21:a, 23:b,
     51:2, 52:3, 53:4, 54:5, 55:6, 56:7, 57:C, 5B:1, default:ffffffff
-  }["TW"]
+  }["TW"]  // see tape width mappings below
 TapeKind = "TR"
 ErrorDetail = "EI"
 ErrorDetail2 = "EJ"
@@ -528,6 +528,97 @@ Following is an (incomplete list from `LWPrintProductInformation.java`)
 | LW Z5010   |         4 | 1,2,3,4,5,6,7,12 | 300 |      yes |        yes |         yes |        78 |
 | LW Z5000   |         4 | 1,2,3,4,5,6,7,12 | 300 |      yes |        yes |         yes |        78 |
 
+## Mappings
+There are a few enums here, so let's go
+
+### Status
+The possible values for status are:
+```
+00 = Idle
+01 = Feeding
+02 = Printing
+03 = DataSending
+04 = FeedEnd
+05 = PrintEnd
+06 = PickAndPrintPrinting
+10 = DemoPrinting
+11 = DeviceFeeding
+12 = DevicePrinting
+13 = FirmwareUpdating
+20 = SmallRollWaiting
+22 = WaitingForTapeRemoval
+48 = Engraving
+49 = EngravingEnd
+4A = EngravingFeed
+4B = EngravingFeedEnd
+FF = UnexpectedError
+```
+
+### Tape Kind
+The possible tape kinds are
+
+```
+00 = Normal
+01 = Transfer
+10 = Cable
+11 = Index
+40 = Braille
+50 = Olefin
+51 = ThermalPaper
+52 = Tube
+53 = PET
+54 = DieCut1
+55 = DieCut2
+56 = DieCut3
+57 = DieCut4
+58 = DieCut5
+59 = WideReserved1
+5a = WideReserved2
+5b = WideReserved3
+5c = WideReserved4
+5d = WideReserved5
+5e = WideReserved6
+5f = WideReserved7
+56 = DieCutCircle
+61 = DieCutEllipse
+62 = DieCutRoundedCorners
+63 = DieCutReserved1
+64 = DieCutReserved2
+65 = DieCutReserved3
+66 = DieCutReserved4
+67 = DieCutReserved5
+68 = DieCutReserved6
+69 = DieCutReserved7
+6a = DieCutReserved8
+6b = DieCutReserved9
+6c = DieCutReserved10
+6d = DieCutReserved11
+6e = DieCutReserved12
+6f = DieCutReserved13
+70 = HST
+80 = Vinyl
+72 = Cleaning
+ff = Unknown
+``` 
+
+### Tape Width
+
+```
+00 = None
+01 = 4 mm
+02 = 6 mm
+03 = 9 mm
+04 = 12 mm
+05 = 18 mm
+06 = 24 mm
+07 = 36 mm
+08 = 24 mm Cable
+09 = 36 mm Cable
+0A = 50 mm 
+0B = 100 mm
+0C = new 50 mm
+FF = unknown
+```
 
 ## Glossary
 
