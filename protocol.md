@@ -344,17 +344,15 @@ Header: (0d11 bytes)
 
 ### [H->C] 4f: something with tapewidth !cap=2
 
-Capabilities level 2 only feature. Sets something using tape width, TapeWidth
-(TW) and TapeOption (TO) from its settings. It's a bit unclear what the
-distinction between tape width and TapeWidth is.
+Capabilities level 2 only feature. Sets something using MappedTapeWidth,
+TapeWidth (TW) and TapeOption (TO) from its settings.
 
 Structure
 ```
 Header: (8 bytes)
     ESC { 5 4f data σ }
 
-tapewidth ∈ {0d11, 0d10, …}
-also TapeOption, TapeWidth
+MappedTapeWidth, TapeOption, TapeWidth
 
 if tapewidth = 0d11:
   if TapeOption & 0x80 = 0
